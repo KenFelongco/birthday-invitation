@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Junelyn 28th Birthday Invitation</title>
+<link rel="icon" type="image/svg+xml" href="assets/invitation-favicon.svg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,6 +49,18 @@
     <span class="floating-flower" style="--x: 54%; --size: 18px; --duration: 26s; --delay: -14s; --drift: -46px;"></span>
     <span class="floating-flower" style="--x: 71%; --size: 30px; --duration: 21s; --delay: -8s; --drift: 38px;"></span>
     <span class="floating-flower" style="--x: 88%; --size: 24px; --duration: 23s; --delay: -16s; --drift: -52px;"></span>
+</div>
+
+<audio id="background-music" src="assets/A%20Woman%20of%20God%20Blessed%20and%20Chosen.mp3" preload="auto" autoplay loop playsinline aria-hidden="true"></audio>
+
+<div class="music-player" id="music-player" aria-label="Background music controls">
+    <button class="music-toggle is-paused" type="button" id="music-toggle" aria-label="Play music" aria-pressed="false">
+        <span class="music-toggle-icon" aria-hidden="true"></span>
+    </button>
+    <div class="music-volume">
+        <label for="music-volume">Music</label>
+        <input id="music-volume" type="range" min="0" max="100" value="50" aria-label="Music volume">
+    </div>
 </div>
 
 <main>
@@ -308,4 +321,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-

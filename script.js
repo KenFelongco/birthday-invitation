@@ -6,6 +6,95 @@ const countdownFields = {
     seconds: document.getElementById("seconds")
 };
 const openingScreen = document.getElementById("opening-screen");
+const backgroundMusic = document.getElementById("background-music");
+const musicPlayer = document.getElementById("music-player");
+const musicToggle = document.getElementById("music-toggle");
+const musicVolume = document.getElementById("music-volume");
+const INITIAL_MUSIC_VOLUME = 0.5;
+
+function updateMusicToggleState() {
+    if (!backgroundMusic || !musicToggle) {
+        return;
+    }
+
+    const isPaused = backgroundMusic.paused;
+    musicToggle.classList.toggle("is-paused", isPaused);
+    musicToggle.setAttribute("aria-label", isPaused ? "Play music" : "Pause music");
+    musicToggle.setAttribute("aria-pressed", String(!isPaused));
+}
+
+function setMusicVolume(value) {
+    if (!backgroundMusic) {
+        return;
+    }
+
+    backgroundMusic.volume = Math.min(Math.max(value, 0), 1);
+}
+
+function playBackgroundMusic() {
+    if (!backgroundMusic) {
+        return Promise.resolve(false);
+    }
+
+    const playPromise = backgroundMusic.play();
+
+    if (!playPromise) {
+        updateMusicToggleState();
+        return Promise.resolve(true);
+    }
+
+    return playPromise
+        .then(() => {
+            musicPlayer?.classList.remove("is-blocked");
+            updateMusicToggleState();
+            return true;
+        })
+        .catch(() => {
+            musicPlayer?.classList.add("is-blocked");
+            updateMusicToggleState();
+            return false;
+        });
+}
+
+function requestMusicAfterInteraction(event) {
+    if (event?.target && musicPlayer?.contains(event.target)) {
+        return;
+    }
+
+    playBackgroundMusic();
+}
+
+if (backgroundMusic) {
+    setMusicVolume(INITIAL_MUSIC_VOLUME);
+
+    backgroundMusic.addEventListener("play", updateMusicToggleState);
+    backgroundMusic.addEventListener("pause", updateMusicToggleState);
+    backgroundMusic.addEventListener("volumechange", updateMusicToggleState);
+
+    playBackgroundMusic();
+    window.addEventListener("load", playBackgroundMusic, { once: true });
+
+    ["pointerdown", "keydown"].forEach((eventName) => {
+        document.addEventListener(eventName, requestMusicAfterInteraction, { once: true });
+    });
+}
+
+if (musicToggle && backgroundMusic) {
+    musicToggle.addEventListener("click", () => {
+        if (backgroundMusic.paused) {
+            playBackgroundMusic();
+        } else {
+            backgroundMusic.pause();
+        }
+    });
+}
+
+if (musicVolume) {
+    musicVolume.value = String(INITIAL_MUSIC_VOLUME * 100);
+    musicVolume.addEventListener("input", () => {
+        setMusicVolume(Number(musicVolume.value) / 100);
+    });
+}
 
 function hideOpeningScreen() {
     if (!openingScreen) {

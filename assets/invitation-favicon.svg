@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8f45c4"/>
+      <stop offset="1" stop-color="#4f1b78"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="18" y1="18" x2="48" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8ff"/>
+      <stop offset="1" stop-color="#efd7ff"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="21" y1="17" x2="45" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f7dd94"/>
+      <stop offset="1" stop-color="#d8a53f"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <path d="M14 25.5 32 14l18 11.5v23A4.5 4.5 0 0 1 45.5 53h-27A4.5 4.5 0 0 1 14 48.5z" fill="url(#gold)"/>
+  <path d="M19 20h26v28H19z" rx="3" fill="url(#paper)"/>
+  <path d="M14 26 32 39l18-13v22.5A4.5 4.5 0 0 1 45.5 53h-27A4.5 4.5 0 0 1 14 48.5z" fill="#fbecff"/>
+  <path d="m14.8 49.8 14.4-13.1a4.2 4.2 0 0 1 5.6 0l14.4 13.1A4.5 4.5 0 0 1 45.5 53h-27a4.5 4.5 0 0 1-3.7-3.2z" fill="#ffffff"/>
+  <path d="M50 26 34.8 38a4.4 4.4 0 0 1-5.6 0L14 26" fill="none" stroke="#d8a53f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M32 31.5c-4.7-3.7-7.6-6.1-7.6-9a4.1 4.1 0 0 1 7.6-2.1 4.1 4.1 0 0 1 7.6 2.1c0 2.9-2.9 5.3-7.6 9z" fill="#7a32a8"/>
+</svg>
