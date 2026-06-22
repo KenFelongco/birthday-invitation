@@ -11,6 +11,7 @@ const musicPlayer = document.getElementById("music-player");
 const musicToggle = document.getElementById("music-toggle");
 const musicVolume = document.getElementById("music-volume");
 const INITIAL_MUSIC_VOLUME = 0.5;
+let musicUserPaused = false;
 
 function updateMusicToggleState() {
     if (!backgroundMusic || !musicToggle) {
@@ -31,10 +32,17 @@ function setMusicVolume(value) {
     backgroundMusic.volume = Math.min(Math.max(value, 0), 1);
 }
 
-function playBackgroundMusic() {
+function playBackgroundMusic(force = false) {
     if (!backgroundMusic) {
         return Promise.resolve(false);
     }
+
+    if (musicUserPaused && !force) {
+        return Promise.resolve(false);
+    }
+
+    backgroundMusic.muted = false;
+    backgroundMusic.autoplay = true;
 
     const playPromise = backgroundMusic.play();
 
@@ -66,13 +74,29 @@ function requestMusicAfterInteraction(event) {
 
 if (backgroundMusic) {
     setMusicVolume(INITIAL_MUSIC_VOLUME);
+    backgroundMusic.muted = false;
+    backgroundMusic.autoplay = true;
 
     backgroundMusic.addEventListener("play", updateMusicToggleState);
     backgroundMusic.addEventListener("pause", updateMusicToggleState);
     backgroundMusic.addEventListener("volumechange", updateMusicToggleState);
+    backgroundMusic.addEventListener("loadeddata", () => playBackgroundMusic(), { once: true });
+    backgroundMusic.addEventListener("canplay", () => playBackgroundMusic(), { once: true });
 
     playBackgroundMusic();
-    window.addEventListener("load", playBackgroundMusic, { once: true });
+    [120, 600, 1400].forEach((delay) => {
+        window.setTimeout(() => playBackgroundMusic(), delay);
+    });
+
+    document.addEventListener("DOMContentLoaded", () => playBackgroundMusic(), { once: true });
+    window.addEventListener("load", () => playBackgroundMusic(), { once: true });
+    window.addEventListener("pageshow", () => playBackgroundMusic(), { once: true });
+
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            playBackgroundMusic();
+        }
+    });
 
     ["pointerdown", "keydown"].forEach((eventName) => {
         document.addEventListener(eventName, requestMusicAfterInteraction, { once: true });
@@ -82,8 +106,10 @@ if (backgroundMusic) {
 if (musicToggle && backgroundMusic) {
     musicToggle.addEventListener("click", () => {
         if (backgroundMusic.paused) {
-            playBackgroundMusic();
+            musicUserPaused = false;
+            playBackgroundMusic(true);
         } else {
+            musicUserPaused = true;
             backgroundMusic.pause();
         }
     });
