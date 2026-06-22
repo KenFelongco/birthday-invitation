@@ -14,6 +14,33 @@
 </head>
 
 <body>
+<audio id="background-music" src="assets/A%20Woman%20of%20God%20Blessed%20and%20Chosen.mp3" preload="auto" autoplay loop playsinline aria-hidden="true"></audio>
+<script>
+(() => {
+    const music = document.getElementById("background-music");
+
+    if (!music) {
+        return;
+    }
+
+    const playImmediately = () => {
+        music.volume = 0.5;
+        music.muted = false;
+        music.autoplay = true;
+
+        const playAttempt = music.play();
+
+        if (playAttempt) {
+            playAttempt.catch(() => {});
+        }
+    };
+
+    playImmediately();
+    music.addEventListener("loadeddata", playImmediately, { once: true });
+    music.addEventListener("canplay", playImmediately, { once: true });
+})();
+</script>
+
 <div class="opening-screen" id="opening-screen" aria-label="Opening invitation">
     <div class="opening-content">
         <p class="opening-kicker">You Are Invited</p>
@@ -50,8 +77,6 @@
     <span class="floating-flower" style="--x: 71%; --size: 30px; --duration: 21s; --delay: -8s; --drift: 38px;"></span>
     <span class="floating-flower" style="--x: 88%; --size: 24px; --duration: 23s; --delay: -16s; --drift: -52px;"></span>
 </div>
-
-<audio id="background-music" src="assets/A%20Woman%20of%20God%20Blessed%20and%20Chosen.mp3" preload="auto" autoplay loop playsinline aria-hidden="true"></audio>
 
 <div class="music-player" id="music-player" aria-label="Background music controls">
     <button class="music-toggle is-paused" type="button" id="music-toggle" aria-label="Play music" aria-pressed="false">
